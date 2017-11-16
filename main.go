@@ -19,7 +19,7 @@ const (
 
 type ResultRow struct {
 	URL   string
-	Existed bool
+	Existed int
 	Error bool
 }
 
@@ -44,7 +44,7 @@ func main() {
   //write into output file
 	bufout := bufio.NewWriter(out)
 	for _, r := range result {
-		bufout.WriteString("\""+r.URL+"\","+strconv.FormatBool(r.Existed)+","+strconv.FormatBool(r.Error)+"\n")
+		bufout.WriteString("\""+r.URL+"\","+strconv.Itoa(r.Existed)+","+strconv.FormatBool(r.Error)+"\n")
 	}
   bufout.Flush()
 }
@@ -110,20 +110,20 @@ func concurrentSearch(urls []string, target string, maxRoutines int) []ResultRow
 func toSearch(url string, re *regexp.Regexp) ResultRow {
 	response, err := http.Get(url)
 	if err != nil || response.StatusCode < 200 || response.StatusCode >= 300{
-		return ResultRow{URL:url, Existed: false, Error: true}
+		return ResultRow{URL:url, Existed: 0, Error: true}
 	}
 	defer response.Body.Close()
 	data, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		return ResultRow{URL: url, Existed: false, Error: true}
+		return ResultRow{URL: url, Existed: 0, Error: true}
 	}
-	existed := false
+	count := 0
 	if re.FindAllIndex(data, -1) == nil {
-		existed = false
+		count = 0
 	} else {
-		existed = true
+		count = len(re.FindAllIndex(data, -1))
 	}
-	return ResultRow{URL:url, Existed: existed, Error: false}
+	return ResultRow{URL:url, Existed: count, Error: false}
 }
 
 func parseFile(filePath string) ([]string, error) {

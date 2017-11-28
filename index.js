@@ -43,48 +43,72 @@ class SearchBox extends React.Component {
   }
 }
 
-function Results(props) {
-  const listOfPages= (
-    <ol>
-      {props.pages.map((page) =>
-        <li key={page.id}>
-          {page.title}
-          {' Count: '+page.frequency}
-        </li>
-      )}
-    </ol>
-  );
-  return (
-  <ScrollArea
-    speed={0.8}
-    vertical={true}
-    horizontal={true}>
-  <div>
-    {listOfPages}
-  </div>
-  </ScrollArea>
-  );
-}
+class Results extends React.Component {
+  constructor() {
+      super();
+      this.state = {
+      //this is currently fake data,
+      //in reality we will do ajax call to fetch data
+        data: [{
+          id: 1,
+          name: "Simon Bailey",
+          frequency: "123"
+        }, {
+          id: 2,
+          name: "Thomas Burleson",
+          frequency: "123"
+        }, {
+          id: 3,
+          name: "Will Button",
+          frequency: "123"
+        }]
+      }
+    }
+    render() {
+      let rows = this.state.data.map(row => {
+        return <Row key = {
+          row.id
+        }
+        data = {
+          row
+        }
+        />
+      })
+      return <table >
+        < tbody > {
+          rows
+        } < /tbody> < /table>
+    }
+  }
+
+  const Row = (props) => {
+    return (
+      <tr>
+        <td>
+          { props.data.id }
+        </td>
+        <td>
+          { props.data.name }
+        </td>
+        <td>
+         { props.data.frequency }
+        </td>
+      </tr>
+    );
+  }
+
+
 
 
 class Main extends React.Component {
-
   render() {
-    const pages =[ //pages will be determined in some other way. We will receive
-      //a ranked list of URLs (ranked by frequency of that term in the URL)
-      //along with the frequency for each of those URLs.
-      {id:1, title: 'title1 REALLY LONG NAME still is not scrolling ksjflkadsjfldkasjgkljdkfjkdjfaldsfkjsaflksdjfklsajfl;ksajfksdjaf;asfjas;dkfjdsl;fkjdsf;kladjfl;kasdfjdl;ksfjdl;kafjadslk;fjasdlkjfdslakfjdslkfjdslkfjasl;kfjas;kfjdsaklfjdaslkfjadlkfjdslkfjsdlkjadslkfjlakdsfjdlaksfjd;lfks', frequency: '145'},
-      {id:2, title: 'title2', frequency: '246'},
-      {id:3, title: 'title3', frequency: '367'},
-      {id:4, title: 'title4', frequency: '426'}
-    ];
     return (
       <div className="display">
         <div className="search-box">
           <SearchBox />
         </div>
         <div className="results-list">
-          <Results pages= {pages}/>
+          <Results/>
         </div>
       </div>
     );

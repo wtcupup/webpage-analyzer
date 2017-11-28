@@ -1,10 +1,6 @@
 body {
-  font: 14px "Century Gothic", Futura, sans-serif;
-  margin: 20px;
-}
-
-ol, ul {
-  padding-left: 30px;
+  font: 14px "Garamond", Futura, sans-serif;
+  margin: 25px;
 }
 
 /*.board-row:after {

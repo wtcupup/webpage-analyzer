@@ -31,20 +31,22 @@ func main() {
 
 	//search performed here
 	result := concurrentSearch(urls, target, maxRoutines)
+
 	for _, r := range result {
 		fmt.Println("\""+r.URL+"\","+strconv.Itoa(r.Existed)+","+strconv.FormatBool(r.Error)+"\n")
 	}
-  fmt.Println("End")
+  	fmt.Println("End")
 }
 
 func getURLs() []string {
 	var urls []string
 
 	for i := range os.Args {
-		if i == 0 { continue }
-		if i == 1 {continue}
-		url := os.Args[1]
-		urls = append(urls, url)
+		if (i > 1){
+			url := os.Args[i]
+			urls = append(urls, url)
+		}
+
 	}
 
   return urls
@@ -54,9 +56,13 @@ func getURLs() []string {
 
 //shouldn't have more than 20 HTTP requests at any given time,20 go routines at max
 func concurrentSearch(urls []string, target string, maxRoutines int) []ResultRow {
-    exp := regexp.MustCompile("(?i)\\b+" + target + "\\b+")
+    	fmt.Println("In concurrent search")
+	fmt.Println(target) // Prints 'testing'
+	fmt.Println(urls) // Prints [google.com/]
+	exp := regexp.MustCompile("(?i)\\b+" + target + "\\b+")
+
 	// pipeline of three stages
-	stage1 := make(chan string, maxRoutines)
+	stage1 := make(chan string, 20)
 	stage2 := make(chan ResultRow)
 	stage3 := make(chan []ResultRow)
 
@@ -88,6 +94,7 @@ func concurrentSearch(urls []string, target string, maxRoutines int) []ResultRow
 	close(stage2)
 	result := <-stage3
 	close(stage3)
+	fmt.Println(result) // Prints []
 	return result
 }
 

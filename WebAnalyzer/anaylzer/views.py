@@ -9,7 +9,7 @@ def main_view(request):
     outputs = []
     if request.method == 'POST':
         search_word = request.POST['search_word']
-        p = Popen(['./webpage-analyzer/main', str(search_word), 'https://www.google.com'], stdout=subprocess.PIPE)
+        p = Popen(['./webpage-analyzer/main', str(search_word), 'google.com/', 'facebook.com/'], stdout=subprocess.PIPE)
         p.wait()
         for line in p.stdout:
             outputs.append(line)

@@ -2,6 +2,15 @@ body {
   font: 14px "Garamond", Futura, sans-serif;
   margin: 25px;
 }
+header {
+  font: 40px "Garamond", Futura, sans-serif;
+  text-align: center;
+}
+
+.search-box {
+  font-size: 20px;
+  text-align: center;
+}
 
 /*.board-row:after {
   clear: both;

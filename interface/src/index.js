@@ -1,8 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import ScrollArea from 'react-scrollbar';
-//var ScrollArea=require('react-scrollbar');
+//import ScrollArea from 'react-scrollbar';
+//import Helmet from 'react-helmet';
+
+const Title = _ =>
+  <header>
+    Webpage Analyzer
+  </header>
 
 
 class SearchBox extends React.Component {
@@ -32,12 +37,15 @@ class SearchBox extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
+        <br/>
         <label>
           Search Term:
           <input type="text" value={this.state.value}
             onChange={this.handleChange} />
         </label>
         <input type="submit" value= "Submit" />
+        <br/>
+        <br/>
       </form>
     );
   }
@@ -75,6 +83,13 @@ class Results extends React.Component {
         />
       })
       return <table >
+        < thead> {
+        <tr>
+          <td>Rank </td>
+          <td>Webpage</td>
+          <td>Count</td>
+        </tr>
+        } </thead>
         < tbody > {
           rows
         } < /tbody> < /table>
@@ -104,6 +119,9 @@ class Main extends React.Component {
   render() {
     return (
       <div className="display">
+        <div className="title">
+          <Title/>
+        </div>
         <div className="search-box">
           <SearchBox />
         </div>

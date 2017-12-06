@@ -1,0 +1,37 @@
+{% block body %}
+<div align="center">
+<form method="post" action="/">
+        {% csrf_token %}
+
+        <label for="search_word">Type a word to search</label>
+        <br>
+        <textarea autocomplete="off" name="search_word" id="search_word"></textarea>
+        <br>
+
+        <label for="new_url">Add a site to search</label>
+        <br>
+        <textarea autocomplete="off" name="new_url" id="new_url"></textarea>
+
+        <br>
+
+        <input type="submit" value="Search">
+
+        <br>
+</form>
+
+    <h3>Current Sites Being Searched</h3>
+
+    {% for site in sites %}
+        {{ site.url }} {% if site.was_searched %}: {{ site.count }} {% endif %}<br>
+        {% endfor %}
+
+        {% for line in output %}
+        {{ line }}
+    {% endfor %}
+    <br>
+    {% if was_search %}
+        <h4>Average: {{ average }}</h4>
+    {% endif %}
+</div>
+
+{% endblock %}

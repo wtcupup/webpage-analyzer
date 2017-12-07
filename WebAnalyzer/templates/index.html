@@ -1,8 +1,34 @@
 <html>
+<script src="https://use.fontawesome.com/5bac3b535a.js"></script>
 
 <style>
 body{
-    background-color: whitesmoke;
+    background-color: slategray;
+}
+#wrapper{
+    height: 100%;
+    width: 100%;
+}
+#left {
+    width: 25%;
+    float: left;
+    border: 2px solid black;
+    background-color: white;
+}
+#center {
+    width: 50%;
+    text-align: center;
+    float: left;
+}
+#results {
+    text-align: center;
+}
+table{
+    font-size: 150%;
+    border: 2px solid black;
+}
+th, td {
+    border: 1px solid black;
 }
 </style>
 
@@ -10,46 +36,69 @@ body{
 
 {% block body %}
     <h1 align="center">Webpage Analyzer</h1>
-    <h3>Current Urls To Search</h3>
-    <ul>
-    {% for site in sites %}
-        <li>{{ site.url }}</li>
-    {% endfor %}
-    </ul>
+    <div id="wrapper">
 
-<div align="center">
+    <div id="left">
 
-
-<form method="post" action="/">
-    {% csrf_token %}
-
-    <label for="search_word">Type a word to search</label>
+        <h3 align="center">Current Urls Being Searched</h3>
+        <ul>
+        {% for site in sites %}
+            {{ site.url }}
+            <button onclick="window.location.href='/delete/{{ site.id }}'"><i class="fa fa-times fa-1x" aria-hidden="true" style="color: red"></i></button>
+            <br>
+        {% endfor %}
+        </ul>
         <br>
-    <textarea autocomplete="off" name="search_word" id="search_word"></textarea>
-        <br>
+        <form method="post" action="/" style="text-align: center;">
+            {% csrf_token %}
 
-    <label for="new_url">Add a site to search</label>
-        <br>
-    <textarea autocomplete="off" name="new_url" id="new_url"></textarea>
+            <label for="new_url">Add a site to search</label>
+                <br>
+                <textarea autocomplete="off" name="new_url" id="new_url"></textarea>
+                <br>
+            <input type="submit" value="Add">
 
-        <br>
+        </form>
+    </div>
 
-    <input type="submit" value="Search">
+    <div id="center">
+        <form method="post" action="/">
+            {% csrf_token %}
 
-        <br>
-</form>
-    {% if was_search %}
-    <h3>Results</h3>
-    <ol>
-    {% for site in sites %}
-        <li>{{ site.url }} {% if site.was_searched %}: {{ site.count }} {% endif %}</li>
-    {% endfor %}
-    </ol>
-    <br>
-    <h4>Average: {{ average }}</h4>
-    {% endif %}
-</div>
+            <label for="search_word" style="font-size: 200%">Type a word to search</label>
+            <br>
+            <textarea autocomplete="off" name="search_word" id="search_word" style="width:50%; height: 5%; font-size: 150%"></textarea>
+            <br>
 
+            <input type="submit" value="Analyze">
+
+
+        </form>
+
+
+        {% if was_search %}
+
+        <div id="results">
+
+            <h1>Results</h1>
+            <table align="center" style="background-color: white">
+            <tr>
+                <th>Rank</th>    <th>Site</th>  <th>Frequency</th>
+            </tr>
+            {% for site in sites %}
+                <tr>
+                <td style="text-align: center">{{ forloop.counter }}</td>  <td>{{ site.url }}</td>     <td style="text-align: center">{{ site.count }}</td>
+                </tr>
+            {% endfor %}
+            </table>
+
+            <br>
+            <h2>Average: {{ average }}</h2>
+        </div>
+        {% endif %}
+    </div>
+
+    </div>
 {% endblock %}
 </body>
 

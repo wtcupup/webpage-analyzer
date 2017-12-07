@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import subprocess
 from subprocess import Popen
 from backend.models import Website, WebsiteList
@@ -43,3 +43,10 @@ def main_view(request):
 def tone_view(request):
 
     return render(request, 'tone.html', context=None)
+
+
+def delete_url_view(request, id):
+    id_to_delete = int(id)
+    site_to_delete = Website.objects.get(id=id_to_delete)
+    site_to_delete.delete()
+    return redirect('/')

@@ -20,5 +20,6 @@ from backend import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.main_view, name='main'),
-    url(r'^tone/', views.tone_view, name='tone')
+    url(r'^tone/', views.tone_view, name='tone'),
+    url(r'^delete/([0-9])', views.delete_url_view, name='delete_url')
 ]

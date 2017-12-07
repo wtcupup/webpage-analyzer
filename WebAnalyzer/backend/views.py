@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+from django.shortcuts import render, redirect
+=======
 from django.shortcuts import render
+>>>>>>> 3774ec100e91428efe8ae98db9855564eebb005d
 import subprocess
 from subprocess import Popen
 from backend.models import Website, WebsiteList
@@ -39,7 +43,10 @@ def main_view(request):
         average = find_average(sites)
     return render(request, 'index.html', {'sites': sites, 'average': average, 'was_search': was_search})
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> 3774ec100e91428efe8ae98db9855564eebb005d
 def tone_view(request):
     tone_words= get_tone_words_hashmap()
     master_list = WebsiteList.objects.first()
@@ -58,14 +65,34 @@ def tone_view(request):
         for line in go_pipe.stdout:
             line = line.decode("utf-8")
             results = line.split(',')
+<<<<<<< HEAD
+            url_searched = results[0]   # the
+            url_searched = url_searched[1:-1]
+            if Website.objects.filter(list=master_list, url=url_searched).exists():
+                word_count = int(results[1])    # the frequency for that url
+=======
             url_searched = results[0]  # the
             url_searched = url_searched[1:-1]
             if Website.objects.filter(list=master_list, url=url_searched).exists():
                 word_count = int(results[1])  # the frequency for that url
+>>>>>>> 3774ec100e91428efe8ae98db9855564eebb005d
                 weighted_word_count = word_count*tone_words[key]
                 score_map[url_searched] += weighted_word_count
     #round scores
     for site in sites:
         score_map[site.url] = round(score_map[site.url], 2)
 
+<<<<<<< HEAD
     return render(request, 'tone.html', {'map': score_map})
+
+
+
+
+def delete_url_view(request, id):
+    id_to_delete = int(id)
+    site_to_delete = Website.objects.get(id=id_to_delete)
+    site_to_delete.delete()
+    return redirect('/')
+=======
+    return render(request, 'tone.html', {'map': score_map})
+>>>>>>> 3774ec100e91428efe8ae98db9855564eebb005d

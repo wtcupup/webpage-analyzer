@@ -50,6 +50,47 @@ func getURLs() []string {
 //shouldn't have more than 20 HTTP requests at any given time,20 go routines at max
 func concurrentSearch(urls []string, target string, maxRoutines int) []ResultRow {
     exp := regexp.MustCompile("(?i)" + target + " ")
+<<<<<<< HEAD
+
+	// pipeline of three stages
+	stage1 := make(chan string, 20)
+	stage2 := make(chan ResultRow)
+	stage3 := make(chan []ResultRow)
+
+	go func() {
+		k := 0
+		tmp := make([]ResultRow, 0, len(urls))
+		for s := range stage2 {
+			tmp = append(tmp, s)
+			k++
+			if k == len(urls) { break }
+		}
+		stage3 <- tmp
+	}()
+
+    //max 20 go routines
+	for k := 0; k < maxRoutines; k++ {
+		go func() {
+			for s := range stage1 {
+				stage2 <- toSearch(s, exp)
+			}
+		}()
+	}
+
+	for _, u := range urls {
+		stage1 <-  u
+	}
+
+	close(stage1)
+	close(stage2)
+	result := <-stage3
+	close(stage3)
+
+	//var result = make([]ResultRow, 0)
+	//for k := 0; k < len(urls); k++ {
+	//	result = append(result, toSearch(urls[k], exp))
+	//}
+=======
 	// var number int = len(urls)
 
 	// pipeline of three stages
@@ -91,6 +132,7 @@ func concurrentSearch(urls []string, target string, maxRoutines int) []ResultRow
 	for k := 0; k < len(urls); k++ {
 		result = append(result, toSearch(urls[k], exp))
 	}
+>>>>>>> 3774ec100e91428efe8ae98db9855564eebb005d
 	return result
 }
 //check if a word exist on webpage

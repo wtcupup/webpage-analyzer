@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+<<<<<<< HEAD
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.5 (WebAnalyzer)" project-jdk-type="Python SDK" />
+=======
   <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.6.1 (/Library/Frameworks/Python.framework/Versions/3.6/bin/python3.6)" project-jdk-type="Python SDK" />
+>>>>>>> 3774ec100e91428efe8ae98db9855564eebb005d
 </project>

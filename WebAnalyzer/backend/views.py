@@ -2,7 +2,7 @@ from django.shortcuts import render
 import subprocess
 from subprocess import Popen
 from backend.models import Website, WebsiteList
-from backend.functions import get_site_list, get_current_sites, find_average
+from backend.functions import get_site_list, get_current_sites, find_average, process_go_line
 
 # Create your views here.
 
@@ -25,16 +25,7 @@ def main_view(request):
             go_pipe.wait()
 
             for line in go_pipe.stdout:
-                line = line.decode("utf-8")
-                results = line.split(',')
-                url_searched = results[0]
-                url_searched = url_searched[1:-1]
-                if Website.objects.filter(list=master_list, url=url_searched).exists():
-                    current_site = Website.objects.get(list=master_list, url=url_searched)
-                    current_site.was_searched = True
-                    word_count = int(results[1])
-                    current_site.count = word_count
-                    current_site.save()
+                process_go_line(line, master_list)
 
         elif url_to_add:
 
@@ -49,12 +40,6 @@ def main_view(request):
     return render(request, 'index.html', {'sites': sites, 'average': average, 'was_search': was_search})
 
 
-"""
-url_to_add = request.POST['url', False]
+def tone_view(request):
 
-if url_to_add:
-    if not Website.objects.filter(list=master_list, url=url_to_add).exists():
-        new_website = Website(list=master_list, url=url_to_add)
-        new_website.save()
-                
-"""
+    return render(request, 'tone.html', context=None)

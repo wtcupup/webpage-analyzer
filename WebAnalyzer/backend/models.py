@@ -12,3 +12,5 @@ class Website(models.Model):
     url = models.TextField(max_length=200)
     was_searched = models.BooleanField(default=True)
     count = models.PositiveIntegerField(default=0)
+
+

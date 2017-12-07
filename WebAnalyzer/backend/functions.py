@@ -1,5 +1,5 @@
 """
-Helper functions to take all the logic out of the views that isn't important to understanding how 
+Helper functions to take all the logic out of the views that isn't important to understanding how
 the view works
 """
 
@@ -44,5 +44,28 @@ def process_go_line(line, master_list):
 
 
 def get_tone_words_hashmap():
-    tone_map = []
-    return tone_map
+    tone_words_map = {}
+    tone_words_map['good'] = 0.5
+    tone_words_map['better'] = 0.3
+    tone_words_map['best'] = 0.9
+    tone_words_map['excellent'] =0.8
+    tone_words_map['nice'] = 0.5
+    tone_words_map['positive'] = 0.5
+    tone_words_map['cool'] = 0.4
+    tone_words_map['terrific'] = 0.8
+    tone_words_map['fantastic'] = 0.8
+    tone_words_map['perfect'] = 1
+    tone_words_map['awesome'] = 0.8
+    tone_words_map['bad'] = -0.5
+    tone_words_map['worse'] = -0.4
+    tone_words_map['worst'] = -0.9
+    tone_words_map['terrible'] = -0.8
+    tone_words_map['horrible'] = -0.8
+    tone_words_map['ugly'] = -0.4
+    tone_words_map['negative'] = -0.5
+    tone_words_map['evil'] = -0.9
+    tone_words_map['disgrace'] = -0.8
+    tone_words_map['disappoint'] = -0.4
+    tone_words_map['trouble'] = -0.3
+    return tone_words_map
+

@@ -1,9 +1,5 @@
 """
-<<<<<<< HEAD
-Helper functions to take all the logic out of the views that isn't important to understanding how 
-=======
 Helper functions to take all the logic out of the views that isn't important to understanding how
->>>>>>> 3774ec100e91428efe8ae98db9855564eebb005d
 the view works
 """
 

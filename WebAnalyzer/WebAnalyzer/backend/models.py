@@ -5,6 +5,8 @@ from django.db import models
 
 class WebsiteList(models.Model):
     name = models.TextField(default='Basic')
+    def __unicode__(self):
+        return self.name
 
 
 class Website(models.Model):
@@ -12,5 +14,8 @@ class Website(models.Model):
     url = models.TextField(max_length=200)
     was_searched = models.BooleanField(default=True)
     count = models.PositiveIntegerField(default=0)
+
+    def __unicode__(self):
+        return self.url
 
 

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tone Analyzer</title>
+</head>
+<style>
+table{
+    font-size: 150%;
+    border: 2px solid black;
+}
+th, td {
+    border: 1px solid black;
+}
+#back-button {
+    width: 10%;
+    height: 4%;
+    font-size: 100%;
+    border: 2px solid black;
+    cursor: pointer;
+}
+</style>
+<body>
+<div align="center">
+
+<table align="center">
+
+
+<tr> <th>Rank</th> <th>Site</th> <th>Score</th> </tr>
+<br>
+<h1>Ranked sites:</h1>
+<h3>Higher Scores are more positive</h3>
+{% for site, score in results %}
+<tr>
+    <td>{{ forloop.counter }}</td> <td> {{ site }} </td> <td> {{ score }} </td>
+</tr>
+{% endfor %}
+
+</table>
+<br><br>
+<button id="back-button" onclick="window.location.href='/'">Back</button>
+</div>
+
+</body>
+</html>

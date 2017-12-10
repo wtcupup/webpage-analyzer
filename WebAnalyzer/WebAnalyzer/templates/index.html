@@ -1,0 +1,129 @@
+<html>
+<script src="https://use.fontawesome.com/5bac3b535a.js"></script>
+
+<style>
+body{
+    background-color: slategray;
+}
+#wrapper{
+    height: 100%;
+    width: 100%;
+}
+#left {
+    margin-left: 1%;
+    width: 24%;
+    float: left;
+    border: 2px solid black;
+    background-color: white;
+}
+#center {
+    width: 50%;
+    text-align: center;
+    float: left;
+}
+#right{
+    width: 24%;
+    float: left;
+}
+#results {
+    text-align: center;
+}
+table{
+    font-size: 150%;
+    border: 2px solid black;
+}
+th, td {
+    border: 1px solid black;
+}
+#tone-analyzer {
+    width: 90%;
+    margin-right: 3%;
+    height: 25%;
+    font-size: 200%;
+    border: 4px solid black;
+    cursor: pointer;
+}
+#tone-analyzer:hover {
+    background-color: #3CB371;
+    color: white;
+}
+#delete-button{
+    cursor: pointer;
+}
+</style>
+
+<body>
+
+{% block body %}
+    <h1 align="center">Webpage Analyzer</h1>
+    <div id="wrapper">
+
+    <div id="left">
+
+        <h3 align="center">Current Urls Being Searched</h3>
+        <ul>
+        {% for site in sites %}
+            {{ site.url }}
+            <button id='delete-button' onclick="window.location.href='/delete/{{ site.id }}'"><i class="fa fa-times fa-1x" aria-hidden="true" style="color: red"></i></button>
+            <br>
+        {% endfor %}
+        </ul>
+        <br>
+        <form method="post" action="/" style="text-align: center;">
+            {% csrf_token %}
+
+            <label for="new_url">Add a site to search</label>
+                <br>
+                <textarea autocomplete="off" name="new_url" id="new_url" style="width:80%; height: 5%; font-size: 80%"></textarea>
+                <br>
+            <input type="submit" value="Add">
+
+        </form>
+    </div>
+
+    <div id="center">
+        <form method="post" action="/">
+            {% csrf_token %}
+
+            <label for="search_word" style="font-size: 200%">Type a word to search</label>
+            <br>
+            <textarea autocomplete="off" name="search_word" id="search_word" style="width:50%; height: 5%; font-size: 150%"></textarea>
+            <br>
+
+            <input type="submit" value="Analyze">
+
+
+        </form>
+
+
+        {% if was_search %}
+
+        <div id="results">
+
+            <h1>Results</h1>
+            <table align="center" style="background-color: white">
+            <tr>
+                <th>Rank</th>    <th>Site</th>  <th>Frequency</th>
+            </tr>
+            {% for site in sites %}
+                <tr>
+                <td style="text-align: center">{{ forloop.counter }}</td>  <td>{{ site.url }}</td>     <td style="text-align: center">{{ site.count }}</td>
+                </tr>
+            {% endfor %}
+            </table>
+
+            <br>
+            <h2>Average: {{ average }}</h2>
+        </div>
+        {% endif %}
+    </div>
+
+    <div id="right">
+        <button id="tone-analyzer" onclick="window.location.href='/tone-analyzer'">Activate Positivity Meter <i class="fa fa-thermometer-full fa-1x" aria-hidden="true"></i></button>
+    </div>
+
+    </div>
+{% endblock %}
+</body>
+
+</html>

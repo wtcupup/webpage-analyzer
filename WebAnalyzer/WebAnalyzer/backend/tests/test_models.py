@@ -18,28 +18,34 @@ class WebsiteListTest(TestCase):
     def test_websitelist_creation(self):
         w=self.create_websitelist()
         self.assertTrue(isinstance(w, WebsiteList))
-        self.assertEqual(w.__unicode__(), w.name)
+        self.assertEqual(w.name, "someName") #check name is assigned correctly
+    def create_default_websitelist(self):
+        return WebsiteList.objects.create()
+    def test_default_websitelist_creation(self):
+        w=self.create_default_websitelist()
+        self.assertTrue(isinstance(w, WebsiteList))
+        self.assertEqual(w.name, "Basic") #check name is set to default correctly
 
 class WebsiteTest(TestCase):
-    def create_website(self, list=WebsiteList.objects.create(name="aName"), url= "http://www.disney.com", was_searched=True,count=0):
+    def create_website(self, list=WebsiteList.objects.create(name="aName"), url= "http://www.disney.com",
+                       was_searched=False,count=5):
         return Website.objects.create(list=list, url=url, was_searched=was_searched, count=count)
     def test_website_creation(self):
         w = self.create_website()
         self.assertTrue(isinstance(w, Website))
-        self.assertEqual(w.__unicode__(), w.url)  #check that url is correct
-        self.assertEqual(True, w.was_searched) #check that was_searched is True
-        self.assertEqual(0, w.count) #check that count is 0
+        self.assertEqual(w.url, "http://www.disney.com")
+        self.assertEqual(False, w.was_searched)
+        self.assertEqual(5, w.count)
         self.assertEqual(w.list.name, "aName") #check name of WebsiteList is unchanged
+    def create_default_website(self, list=WebsiteList.objects.create(), url= "http://www.disney.com"):
+        return Website.objects.create(list=list, url=url)
+    def test_default_website_creation(self):
+        w = self.create_default_website()
+        self.assertTrue(isinstance(w, Website))
+        self.assertEqual(w.url, "http://www.disney.com")  #check that url is correct
+        self.assertEqual(True, w.was_searched) #check that was_searched is True by default
+        self.assertEqual(0, w.count) #check that count is 0 by default
+        self.assertEqual(w.list.name, "Basic") #check name of WebsiteList is unchanged
 
 
-# from backend.models import Whatever
-# class WhateverTest(TestCase):
-#
-#     def create_whatever(self, title="only a test", body="yes, this is only a test"):
-#         return Whatever.objects.create(title=title, body=body, created_at=timezone.now())
-#
-#     def test_whatever_creation(self):
-#         w = self.create_whatever()
-#         self.assertTrue(isinstance(w, Whatever))
-#         self.assertEqual(w.__unicode__(), w.title)
 

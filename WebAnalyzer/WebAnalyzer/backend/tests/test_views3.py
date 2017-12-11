@@ -4,17 +4,6 @@ from django.test import TestCase
 # from backend.views import delete_url_view
 
 
-#trying to model a test off of this:
-#from backend.models import Whatever
-# def test_whatever_list_view(self):
-#     w = self.create_whatever()
-#     url = reverse("whatever.views.whatever")
-#     resp = self.client.get(url)
-#
-#     self.assertEqual(resp.status_code, 200)
-#     self.assertIn(w.title, resp.content)
-
-
 #test homepage
 class HomepageTests(TestCase):
 

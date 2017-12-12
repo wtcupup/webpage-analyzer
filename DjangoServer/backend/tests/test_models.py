@@ -1,6 +1,5 @@
 from django.test import TestCase
 from backend.models import Website, WebsiteList
-# from django.core.urlresolvers import reverse
 
 """
 Use this website to help build tests:

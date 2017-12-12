@@ -3,9 +3,10 @@ Helper functions to take all the logic out of the views that isn't important to 
 the view works
 """
 
-from backend.models import Website, WebsiteList
+from backend.models import Website
 
 
+# Method takes the user's sites and puts them in the proper format for the Golang program
 def get_site_list(sites):
     site_list = ''
     for site in sites:
@@ -13,6 +14,7 @@ def get_site_list(sites):
     return site_list[:-1]  # get rid of trailing comma
 
 
+# method gets the sites of the user's master_list
 def get_current_sites(master_list):
     sites = master_list.website_set.all()
     for site in sites:
@@ -20,16 +22,17 @@ def get_current_sites(master_list):
     return sites
 
 
+# method finds the average frequency of a search word across all sites
 def find_average(sites):
     total = 0.0
     if len(sites) == 0:
         return 0
     for site in sites:
         total += site.count
-
     return round(total / len(sites), 2)
 
 
+# method takes output from golang code and parse out the url and word count, then updates the database
 def process_go_line(line, master_list):
     line = line.decode("utf-8")
     results = line.split(',')
@@ -43,6 +46,7 @@ def process_go_line(line, master_list):
         current_site.save()
 
 
+# method creates the tone map needed to run our tone test
 def get_tone_words_hashmap():
     tone_words_map = {}
     tone_words_map['good'] = 0.5

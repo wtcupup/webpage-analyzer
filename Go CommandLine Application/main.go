@@ -19,7 +19,7 @@ const (
 
 type ResultRow struct {
 	URL   string
-	Existed int
+	Existed float64
 	Error bool
 }
 
@@ -44,7 +44,7 @@ func main() {
   //write into output file
 	bufout := bufio.NewWriter(out)
 	for _, r := range result {
-		bufout.WriteString("\""+r.URL+"\","+strconv.Itoa(r.Existed)+","+strconv.FormatBool(r.Error)+"\n")
+		bufout.WriteString("\""+r.URL+"\","+","+strconv.FormatBool(r.Error)+"\n")
 	}
   bufout.Flush()
 }
@@ -117,13 +117,53 @@ func toSearch(url string, re *regexp.Regexp) ResultRow {
 	if err != nil {
 		return ResultRow{URL: url, Existed: 0, Error: true}
 	}
-	count := 0
-	if re.FindAllIndex(data, -1) == nil {
-		count = 0
-	} else {
-		count = len(re.FindAllIndex(data, -1))
-	}
-	return ResultRow{URL:url, Existed: count, Error: false}
+
+	var score float64 = 0
+	exp := regexp.MustCompile("(?i)\\b+" + "good" + "\\b+")
+	score += float64(len(exp.FindAllIndex(data, -1))) * 0.5
+	exp = regexp.MustCompile("(?i)\\b+" + "better" + "\\b+")
+	score += float64(len(exp.FindAllIndex(data, -1))) * 0.3
+	exp = regexp.MustCompile("(?i)\\b+" + "best" + "\\b+")
+	score += float64(len(exp.FindAllIndex(data, -1))) * 0.9
+	exp = regexp.MustCompile("(?i)\\b+" + "excellent" + "\\b+")
+	score += float64(len(exp.FindAllIndex(data, -1))) * 0.8
+	exp = regexp.MustCompile("(?i)\\b+" + "nice" + "\\b+")
+	score += float64(len(exp.FindAllIndex(data, -1))) * 0.5
+	exp = regexp.MustCompile("(?i)\\b+" + "positive" + "\\b+")
+	score += float64(len(exp.FindAllIndex(data, -1))) * 0.5
+	exp = regexp.MustCompile("(?i)\\b+" + "cool" + "\\b+")
+	score += float64(len(exp.FindAllIndex(data, -1))) * 0.4
+	exp = regexp.MustCompile("(?i)\\b+" + "terrific" + "\\b+")
+	score += float64(len(exp.FindAllIndex(data, -1))) * 0.8
+	exp = regexp.MustCompile("(?i)\\b+" + "fantastic" + "\\b+")
+	score += float64(len(exp.FindAllIndex(data, -1))) * 0.8
+	exp = regexp.MustCompile("(?i)\\b+" + "perfect" + "\\b+")
+	score += float64(len(exp.FindAllIndex(data, -1))) * 1
+	exp = regexp.MustCompile("(?i)\\b+" + "awesome" + "\\b+")
+	score += float64(len(exp.FindAllIndex(data, -1))) * 0.8
+	exp = regexp.MustCompile("(?i)\\b+" + "bad" + "\\b+")
+	score += float64(len(exp.FindAllIndex(data, -1))) * -0.5
+	exp = regexp.MustCompile("(?i)\\b+" + "worse" + "\\b+")
+	score += float64(len(exp.FindAllIndex(data, -1))) * -0.4
+	exp = regexp.MustCompile("(?i)\\b+" + "worst" + "\\b+")
+	score += float64(len(exp.FindAllIndex(data, -1))) * -0.9
+	exp = regexp.MustCompile("(?i)\\b+" + "terrible" + "\\b+")
+	score += float64(len(exp.FindAllIndex(data, -1))) * -0.8
+	exp = regexp.MustCompile("(?i)\\b+" + "horrible" + "\\b+")
+	score += float64(len(exp.FindAllIndex(data, -1))) * -0.8
+	exp = regexp.MustCompile("(?i)\\b+" + "ugly" + "\\b+")
+	score += float64(len(exp.FindAllIndex(data, -1))) * -0.4
+	exp = regexp.MustCompile("(?i)\\b+" + "negative" + "\\b+")
+	score += float64(len(exp.FindAllIndex(data, -1))) * -0.5
+	exp = regexp.MustCompile("(?i)\\b+" + "evil" + "\\b+")
+	score += float64(len(exp.FindAllIndex(data, -1))) * -0.9
+	exp = regexp.MustCompile("(?i)\\b+" + "disgrace" + "\\b+")
+	score += float64(len(exp.FindAllIndex(data, -1))) * -0.8
+	exp = regexp.MustCompile("(?i)\\b+" + "disappoint" + "\\b+")
+	score += float64(len(exp.FindAllIndex(data, -1))) * -0.4
+	exp = regexp.MustCompile("(?i)\\b+" + "trouble" + "\\b+")
+	score += float64(len(exp.FindAllIndex(data, -1))) * -0.3
+	return ResultRow{URL:url, Existed: 1.00, Error: false}
 }
 
 func parseFile(filePath string) ([]string, error) {
